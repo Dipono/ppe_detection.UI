@@ -13,8 +13,8 @@ import gloves from '../assets/download (2).jpg';
 import musk from '../assets/download (3).jpg';
 import glass from '../assets/eye-protection-safety-glasses-ppe-260nw-1593994171.webp';
 
-
 import { useState } from 'react';
+import axios from 'axios';
 
 function Home() {
 
@@ -33,6 +33,22 @@ function Home() {
             (prevIndex - 1 + images.length) % images.length
         );
     };
+
+    const handleFiles = (e) => {
+        console.log(e.target.files[0]);
+        const file = e.target.files[0];
+        var fileType = file.name.substr(file.name.lastIndexOf("."));
+        if (fileType.toLowerCase() !== '.png' && fileType.toLowerCase() !== '.jpeg' && fileType.toLowerCase() !== '.jpg' && fileType.toLowerCase() !== 'jfif' && fileType.toLowerCase() !== 'webp') return alert('jpg, jpeg or png files only');
+
+        var formData = new FormData();
+        formData.append("file", file)
+
+        axios.post('http://127.0.0.1:5000/predict', formData).then(respond=>{
+            console.log(respond.data.predicted_class_names);
+        }, err=>{
+            console.log(err);
+        })
+    }
 
     let caseTable = <div>
         <table>
@@ -55,19 +71,20 @@ function Home() {
                 <td>Face musk</td>
                 <td>10:45</td>
                 <td><img src={musk} alt='Item Image' height='100px' width='100px' /></td>
-                <td><img src={image1} alt='captured Image' height='100px' width='100px'/></td>
+                <td><img src={image1} alt='captured Image' height='100px' width='100px' /></td>
             </tr>
             <tr>
                 <td>3</td>
                 <td>Gloves</td>
                 <td>10:45</td>
                 <td><img src={gloves} alt='Item Image' height='100px' width='100px' /></td>
-                <td><img src={image1} alt='captured Image' height='100px' width='100px'/></td>
+                <td><img src={image1} alt='captured Image' height='100px' width='100px' /></td>
             </tr>
         </table>
     </div>
     return (<div>
         <Header />
+        <input type='file' onChange={ handleFiles} />
         <div className="content">
             <div id="footage">
                 <img src={images[currentIndex]} alt={`Image ${currentIndex + 1}`} style={{ width: '100%', height: '75vh' }} />
@@ -82,15 +99,15 @@ function Home() {
                     {/* loop hear */}
                     <div className='case'>
                         <h4>Gloves</h4>
-                        <img src={gloves} alt='missing item' height='50px' width='50px' style={{marginTop:'5px'}} />
+                        <img src={gloves} alt='missing item' height='50px' width='50px' style={{ marginTop: '5px' }} />
                     </div>
                     <div className='case'>
                         <h4>Face Musk</h4>
-                        <img src={musk} alt='missing item' height='50px' width='50px' style={{marginTop:'5px'}} />
+                        <img src={musk} alt='missing item' height='50px' width='50px' style={{ marginTop: '5px' }} />
                     </div>
                     <div className='case'>
                         <h4>Eye Glass</h4>
-                        <img src={glass} alt='missing item' height='50px' width='50px' style={{marginTop:'5px'}} />
+                        <img src={glass} alt='missing item' height='50px' width='50px' style={{ marginTop: '5px' }} />
                     </div>
 
                 </div>
