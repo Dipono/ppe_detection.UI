@@ -10,7 +10,7 @@ function Header() {
         </div>
         <div className='nav-bar'>
             <h3 ><Link to='/records' >History</Link></h3>
-            <h3>Help</h3>
+            {/* <h3>Help</h3> */}
         </div>
 
 
